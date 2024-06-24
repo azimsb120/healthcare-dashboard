@@ -17,4 +17,6 @@ class PatientRecord(BaseModel):
 # Load the dataset
 patient_data = pd.read_csv('data/healthcare_dataset.csv')
 
-print(patient_data)
+@app.get("/patients")
+def get_patients():
+    return patient_data.to_dict(orient="records")
