@@ -36,7 +36,8 @@ patient_data.columns = [col.replace(" ", "_") for col in patient_data.columns]
 
 @app.get("/patients")
 def get_patients():
-    return patient_data.to_dict(orient="records")
+    # NOTE: returning only 100 records until pagination is implemented
+    return patient_data.head(100).to_dict(orient="records")
 
 @app.post("/patients")
 def add_patient(record: PatientRecord):
