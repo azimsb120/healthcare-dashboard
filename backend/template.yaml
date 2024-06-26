@@ -7,7 +7,7 @@ Resources:
       Handler: "main.handler"
       Runtime: "python3.11"
       CodeUri: .
-      MemorySize: 128
+      MemorySize: 256
       Timeout: 30
       Policies: "AmazonS3ReadOnlyAccess"
       Events:
