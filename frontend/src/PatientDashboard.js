@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
+import Select from "react-select";
 import "./index.css";
 
 const PatientDashboard = () => {
@@ -7,6 +8,9 @@ const PatientDashboard = () => {
   const [filteredPatients, setFilteredPatients] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [searchColumns, setSearchColumns] = useState([
+    { value: "Name", label: "Name" },
+  ]);
   const headers = [
     "Name",
     "Age",
@@ -26,6 +30,11 @@ const PatientDashboard = () => {
   ];
   const cellClass = "py-3 px-6 text-left whitespace-nowrap";
 
+  const columnOptions = headers.map((header) => ({
+    value: header,
+    label: header,
+  }));
+
   useEffect(() => {
     fetch(
       "https://m92nc6tvoe.execute-api.us-east-2.amazonaws.com/Prod/patients"
@@ -39,18 +48,25 @@ const PatientDashboard = () => {
   }, []);
 
   const handleSearch = (e) => {
-    setSearch(e.target.value);
-    if (e.target.value === "") {
+    const query = e.target.value;
+    setSearch(query);
+    if (query === "") {
       setFilteredPatients(patients);
     } else {
       setFilteredPatients(
         patients.filter((patient) =>
-          Object.values(patient).some((value) =>
-            String(value).toLowerCase().includes(e.target.value.toLowerCase())
+          searchColumns.some((column) =>
+            String(patient[column.value])
+              .toLowerCase()
+              .includes(query.toLowerCase())
           )
         )
       );
     }
+  };
+
+  const handleColumnChange = (selectedOptions) => {
+    setSearchColumns(selectedOptions || []);
   };
 
   return (
@@ -72,6 +88,16 @@ const PatientDashboard = () => {
           placeholder="Search..."
           className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2"
           style={{ borderColor: "#007AC2", outlineColor: "#007AC2" }}
+        />
+      </div>
+      <div className="mb-4">
+        <h3 className="text-lg font-medium mb-2">Search in columns:</h3>
+        <Select
+          isMulti
+          value={searchColumns}
+          onChange={handleColumnChange}
+          options={columnOptions}
+          className="w-full"
         />
       </div>
       {loading ? (
