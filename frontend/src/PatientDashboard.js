@@ -23,7 +23,9 @@ const PatientDashboard = () => {
   const cellClass = "py-3 px-6 text-left whitespace-nowrap";
 
   useEffect(() => {
-    fetch("http://localhost:8000/patients")
+    fetch(
+      "https://m92nc6tvoe.execute-api.us-east-2.amazonaws.com/Prod/patients"
+    )
       .then((response) => response.json())
       .then((data) => setPatients(data));
   }, []);
