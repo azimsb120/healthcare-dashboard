@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FaSearch, FaDownload } from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
 import Select from "react-select";
 import "./index.css";
 
@@ -80,20 +80,6 @@ const PatientDashboard = () => {
     setFilteredPatients(filterPatients(search, searchColumns));
   }, [searchColumns]);
 
-  const downloadCSV = () => {
-    fetch(`${backendUrl}/download_csv`)
-      .then((response) => response.blob())
-      .then((blob) => {
-        const url = window.URL.createObjectURL(new Blob([blob]));
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute("download", "patients.csv");
-        document.body.appendChild(link);
-        link.click();
-        link.parentNode.removeChild(link);
-      });
-  };
-
   return (
     <div className="container mx-auto mt-5 p-4">
       <h1
@@ -116,13 +102,6 @@ const PatientDashboard = () => {
             style={{ borderColor: "#007AC2", outlineColor: "#007AC2" }}
           />
         </div>
-        <button
-          onClick={downloadCSV}
-          className="flex items-center px-3 py-2 bg-blue-600 text-white rounded-lg focus:outline-none focus:ring-2"
-        >
-          <FaDownload className="mr-2" />
-          Download CSV
-        </button>
       </div>
       <div className="mb-4">
         <h3 className="text-lg font-medium mb-2">Search in columns:</h3>
@@ -139,7 +118,7 @@ const PatientDashboard = () => {
       ) : (
         <div className="overflow-x-auto max-h-[calc(100vh-10rem)] overflow-auto">
           <table className="min-w-full bg-white border border-gray-300 rounded-lg shadow">
-            <thead>
+            <thead className="sticky top-0 bg-white">
               <tr
                 className="uppercase text-sm leading-normal"
                 style={{ backgroundColor: "#007AC2", color: "white" }}
