@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaDownload } from "react-icons/fa";
 import Select from "react-select";
 import "./index.css";
 
@@ -11,6 +11,10 @@ const PatientDashboard = () => {
   const [searchColumns, setSearchColumns] = useState([
     { value: "Name", label: "Name" },
   ]);
+
+  const backendUrl =
+    "https://m92nc6tvoe.execute-api.us-east-2.amazonaws.com/Prod";
+
   const headers = [
     "Name",
     "Age",
@@ -36,9 +40,7 @@ const PatientDashboard = () => {
   }));
 
   useEffect(() => {
-    fetch(
-      "https://m92nc6tvoe.execute-api.us-east-2.amazonaws.com/Prod/patients"
-    )
+    fetch(`${backendUrl}/patients`)
       .then((response) => response.json())
       .then((data) => {
         setPatients(data);
@@ -78,6 +80,20 @@ const PatientDashboard = () => {
     setFilteredPatients(filterPatients(search, searchColumns));
   }, [searchColumns]);
 
+  const downloadCSV = () => {
+    fetch(`${backendUrl}/download_csv`)
+      .then((response) => response.blob())
+      .then((blob) => {
+        const url = window.URL.createObjectURL(new Blob([blob]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "patients.csv");
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode.removeChild(link);
+      });
+  };
+
   return (
     <div className="container mx-auto mt-5 p-4">
       <h1
@@ -86,18 +102,27 @@ const PatientDashboard = () => {
       >
         Patient Dashboard
       </h1>
-      <div className="relative mb-4">
-        <span className="absolute inset-y-0 left-0 pl-3 flex items-center">
-          <FaSearch className="text-gray-500" />
-        </span>
-        <input
-          type="text"
-          value={search}
-          onChange={handleSearch}
-          placeholder="Search..."
-          className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2"
-          style={{ borderColor: "#007AC2", outlineColor: "#007AC2" }}
-        />
+      <div className="mb-4 flex justify-between items-center">
+        <div className="relative flex-grow mr-4">
+          <span className="absolute inset-y-0 left-0 pl-3 flex items-center">
+            <FaSearch className="text-gray-500" />
+          </span>
+          <input
+            type="text"
+            value={search}
+            onChange={handleSearch}
+            placeholder="Search..."
+            className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2"
+            style={{ borderColor: "#007AC2", outlineColor: "#007AC2" }}
+          />
+        </div>
+        <button
+          onClick={downloadCSV}
+          className="flex items-center px-3 py-2 bg-blue-600 text-white rounded-lg focus:outline-none focus:ring-2"
+        >
+          <FaDownload className="mr-2" />
+          Download CSV
+        </button>
       </div>
       <div className="mb-4">
         <h3 className="text-lg font-medium mb-2">Search in columns:</h3>
