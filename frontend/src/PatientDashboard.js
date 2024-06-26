@@ -55,7 +55,12 @@ const PatientDashboard = () => {
 
   return (
     <div className="container mx-auto mt-5 p-4">
-      <h1 className="text-2xl font-bold mb-4 text-center">Patient Dashboard</h1>
+      <h1
+        className="text-3xl font-bold mb-6 text-center"
+        style={{ color: "#007AC2" }}
+      >
+        Patient Dashboard
+      </h1>
       <div className="relative mb-4">
         <span className="absolute inset-y-0 left-0 pl-3 flex items-center">
           <FaSearch className="text-gray-500" />
@@ -65,7 +70,8 @@ const PatientDashboard = () => {
           value={search}
           onChange={handleSearch}
           placeholder="Search..."
-          className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2"
+          style={{ borderColor: "#007AC2", outlineColor: "#007AC2" }}
         />
       </div>
       {loading ? (
@@ -74,7 +80,10 @@ const PatientDashboard = () => {
         <div className="overflow-x-auto max-h-[calc(100vh-10rem)] overflow-auto">
           <table className="min-w-full bg-white border border-gray-300 rounded-lg shadow">
             <thead>
-              <tr className="bg-blue-500 text-white uppercase text-sm leading-normal">
+              <tr
+                className="uppercase text-sm leading-normal"
+                style={{ backgroundColor: "#007AC2", color: "white" }}
+              >
                 {headers.map((header) => (
                   <th key={header} className={cellClass}>
                     {header}
@@ -86,7 +95,7 @@ const PatientDashboard = () => {
               {filteredPatients.map((patient) => (
                 <tr
                   key={patient.Name}
-                  className="border-b border-gray-200 hover:bg-gray-100"
+                  className="border-b border-gray-200 hover:bg-gray-100 hover-highlight"
                 >
                   {Object.values(patient).map((value, i) => (
                     <td key={i} className={cellClass}>
