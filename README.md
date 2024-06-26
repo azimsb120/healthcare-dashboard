@@ -12,11 +12,11 @@ Alternatively: http://healthcare-dashboard-react-app.s3-website.us-east-2.amazon
 
 ## Technologies
 
-- **Backend**: Python with FastAPI and Pandas
-- **Frontend**: JavaScript with React.js
+- **Backend**: [Python with FastAPI and Pandas](https://github.com/azimsb120/healthcare-dashboard/tree/main/backend)
+- **Frontend**: [JavaScript with React.js](https://github.com/azimsb120/healthcare-dashboard/tree/main/frontend)
 - **Hosting**:
-  - AWS Lambda and API Gateway for backend APIs
-  - AWS S3 and CloudFront for the frontend
+  - [AWS Lambda and API Gateway for backend APIs](https://github.com/azimsb120/healthcare-dashboard/blob/main/backend/template.yaml)
+  - [AWS S3 and CloudFront for the frontend](https://healthcare-dashboard-react-app.s3.us-east-2.amazonaws.com/index.html)
 
 ## Data
 
