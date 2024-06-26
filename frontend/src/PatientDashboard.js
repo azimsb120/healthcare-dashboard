@@ -52,11 +52,13 @@ const PatientDashboard = () => {
       return patients;
     } else {
       return patients.filter((patient) =>
-        columns.some((column) =>
-          String(patient[column.value])
-            .toLowerCase()
-            .includes(query.toLowerCase())
-        )
+        columns.some((column) => {
+          const fieldValue = String(patient[column.value]).toLowerCase();
+          if (column.value === "Gender") {
+            return fieldValue === query.toLowerCase();
+          }
+          return fieldValue.includes(query.toLowerCase());
+        })
       );
     }
   };
