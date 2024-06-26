@@ -37,9 +37,15 @@ patient_data = pd.read_csv('data/healthcare_dataset.csv')
 patient_data.columns = [col.replace(" ", "_") for col in patient_data.columns]
 
 @app.get("/patients")
-def get_patients():
-    # NOTE: returning only 100 records until pagination is implemented
-    return patient_data.head(100).to_dict(orient="records")
+def get_patients(page: int = 1, size: int = 100):
+    start = (page - 1) * size
+    end = start + size
+    return {
+        "data": patient_data.iloc[start:end].to_dict(orient="records"),
+        "total": len(patient_data),
+        "page": page,
+        "size": size
+    }
 
 @app.post("/patients")
 def add_patient(record: PatientRecord):
