@@ -2,16 +2,19 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import pandas as pd
+from mangum import Mangum
 
 app = FastAPI()
 
 # CORS configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=["*"],
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 class PatientRecord(BaseModel):
     Name: str
@@ -49,3 +52,5 @@ def add_patient(record: PatientRecord):
     patient_data = pd.concat([patient_data, new_row], ignore_index=True)
     # return the new record
     return record_dict
+
+handler = Mangum(app)

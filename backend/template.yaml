@@ -1,0 +1,23 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: "AWS::Serverless-2016-10-31"
+Resources:
+  FastAPIService:
+    Type: "AWS::Serverless::Function"
+    Properties:
+      Handler: "main.handler"
+      Runtime: "python3.11"
+      CodeUri: .
+      MemorySize: 128
+      Timeout: 30
+      Policies: "AmazonS3ReadOnlyAccess"
+      Events:
+        FastAPI:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
+            Method: ANY
+
+Outputs:
+  ApiUrl:
+    Description: "API Gateway endpoint URL for Prod stage for FastAPIService function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
