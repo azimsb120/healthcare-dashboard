@@ -47,27 +47,34 @@ const PatientDashboard = () => {
       });
   }, []);
 
-  const handleSearch = (e) => {
-    const query = e.target.value;
-    setSearch(query);
+  const filterPatients = (query, columns) => {
     if (query === "") {
-      setFilteredPatients(patients);
+      return patients;
     } else {
-      setFilteredPatients(
-        patients.filter((patient) =>
-          searchColumns.some((column) =>
-            String(patient[column.value])
-              .toLowerCase()
-              .includes(query.toLowerCase())
-          )
+      return patients.filter((patient) =>
+        columns.some((column) =>
+          String(patient[column.value])
+            .toLowerCase()
+            .includes(query.toLowerCase())
         )
       );
     }
   };
 
+  const handleSearch = (e) => {
+    const query = e.target.value;
+    setSearch(query);
+    setFilteredPatients(filterPatients(query, searchColumns));
+  };
+
   const handleColumnChange = (selectedOptions) => {
     setSearchColumns(selectedOptions || []);
+    setFilteredPatients(filterPatients(search, selectedOptions || []));
   };
+
+  useEffect(() => {
+    setFilteredPatients(filterPatients(search, searchColumns));
+  }, [searchColumns]);
 
   return (
     <div className="container mx-auto mt-5 p-4">
