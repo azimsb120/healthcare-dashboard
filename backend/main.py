@@ -37,12 +37,28 @@ patient_data = pd.read_csv('data/healthcare_dataset.csv')
 patient_data.columns = [col.replace(" ", "_") for col in patient_data.columns]
 
 @app.get("/patients")
-def get_patients(page: int = 1, size: int = 100):
+def get_patients(
+    page: int = 1,
+    size: int = 100,
+    query: str = "",
+    columns: str = ""
+):
+    filtered_data = patient_data
+
+    if query and columns:
+        columns_list = columns.split(",")
+        filtered_data = filtered_data[
+            filtered_data.apply(
+                lambda row: any(query.lower() in str(row[col]).lower() for col in columns_list), axis=1
+            )
+        ]
+
+    total = len(filtered_data)
     start = (page - 1) * size
     end = start + size
     return {
-        "data": patient_data.iloc[start:end].to_dict(orient="records"),
-        "total": len(patient_data),
+        "data": filtered_data.iloc[start:end].to_dict(orient="records"),
+        "total": total,
         "page": page,
         "size": size
     }
