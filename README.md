@@ -2,8 +2,6 @@
 
 ## About
 
-For recruitment at Roche.
-
 The Patients Dashboard is a fullstack web application that allows you to browse through patient information, mimicking real-world healthcare data. You can search and filter across columns, with the data displayed in a paginated format.
 
 ## Access
